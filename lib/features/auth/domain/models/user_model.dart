@@ -5,49 +5,26 @@ class UserModel extends Equatable {
   final String name;
   final String email;
   final String? photoUrl;
-  final String? phone;
   final DateTime createdAt;
 
-  const UserModel({
-    required this.id,
-    required this.name,
-    required this.email,
-    this.photoUrl,
-    this.phone,
-    required this.createdAt,
-  });
+  const UserModel({required this.id, required this.name, required this.email, this.photoUrl, required this.createdAt});
 
-  factory UserModel.empty() {
-    return UserModel(
-      id: '',
-      name: '',
-      email: '',
-      createdAt: DateTime.now(),
-    );
-  }
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+        id: json['id'] as String? ?? '',
+        name: json['name'] as String? ?? '',
+        email: json['email'] as String? ?? '',
+        photoUrl: json['photoUrl'] as String?,
+        createdAt: DateTime.tryParse(json['createdAt'] as String? ?? '') ?? DateTime.now(),
+      );
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'name': name,
-      'email': email,
-      'photoUrl': photoUrl,
-      'phone': phone,
-      'createdAt': createdAt.toIso8601String(),
-    };
-  }
-
-  factory UserModel.fromJson(Map<String, dynamic> json) {
-    return UserModel(
-      id: json['id'] ?? '',
-      name: json['name'] ?? '',
-      email: json['email'] ?? '',
-      photoUrl: json['photoUrl'],
-      phone: json['phone'],
-      createdAt: DateTime.tryParse(json['createdAt'] ?? '') ?? DateTime.now(),
-    );
-  }
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'email': email,
+        'photoUrl': photoUrl,
+        'createdAt': createdAt.toIso8601String(),
+      };
 
   @override
-  List<Object?> get props => [id, name, email, photoUrl, phone, createdAt];
+  List<Object?> get props => [id, name, email, photoUrl, createdAt];
 }
