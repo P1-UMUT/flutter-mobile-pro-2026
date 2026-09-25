@@ -1,101 +1,46 @@
-abstract class AppException implements Exception {
+// lib/core/exceptions/app_exceptions.dart
+class AppException implements Exception {
   final String message;
   final String? code;
-  final dynamic originalException;
 
-  AppException({
-    required this.message,
-    this.code,
-    this.originalException,
-  });
+  AppException(this.message, {this.code});
 
   @override
-  String toString() => '$runtimeType: $message';
-}
-
-class AuthException extends AppException {
-  AuthException({
-    required String message,
-    String? code,
-    dynamic originalException,
-  }) : super(
-        message: message,
-        code: code,
-        originalException: originalException,
-      );
-}
-
-class NetworkException extends AppException {
-  NetworkException({
-    required String message,
-    String? code,
-    dynamic originalException,
-  }) : super(
-        message: message,
-        code: code,
-        originalException: originalException,
-      );
-}
-
-class DatabaseException extends AppException {
-  DatabaseException({
-    required String message,
-    String? code,
-    dynamic originalException,
-  }) : super(
-        message: message,
-        code: code,
-        originalException: originalException,
-      );
+  String toString() => 'AppException: $message';
 }
 
 class ValidationException extends AppException {
-  final Map<String, String>? fieldErrors;
-
-  ValidationException({
-    required String message,
-    String? code,
-    this.fieldErrors,
-    dynamic originalException,
-  }) : super(
-        message: message,
-        code: code,
-        originalException: originalException,
-      );
+  ValidationException(String message) : super(message, code: 'VALIDATION_ERROR');
 }
 
-class CacheException extends AppException {
-  CacheException({
-    required String message,
-    String? code,
-    dynamic originalException,
-  }) : super(
-        message: message,
-        code: code,
-        originalException: originalException,
-      );
+class NetworkException extends AppException {
+  NetworkException(String message) : super(message, code: 'NETWORK_ERROR');
 }
 
-class UnauthorizedException extends AuthException {
-  UnauthorizedException({
-    required String message,
-    String? code,
-    dynamic originalException,
-  }) : super(
-        message: message,
-        code: code,
-        originalException: originalException,
-      );
+class UnauthorizedException extends AppException {
+  UnauthorizedException(String message) : super(message, code: 'UNAUTHORIZED');
 }
 
 class NotFoundException extends AppException {
-  NotFoundException({
-    required String message,
-    String? code,
-    dynamic originalException,
-  }) : super(
-        message: message,
-        code: code,
-        originalException: originalException,
-      );
+  NotFoundException(String message) : super(message, code: 'NOT_FOUND');
+}
+
+class AuthException extends AppException {
+  AuthException(String message) : super(message, code: 'AUTH_ERROR');
+}
+
+class DatabaseException extends AppException {
+  DatabaseException(String message) : super(message, code: 'DATABASE_ERROR');
+}
+
+class CacheException extends AppException {
+  CacheException(String message) : super(message, code: 'CACHE_ERROR');
+}
+
+class ParseException extends AppException {
+  ParseException(String message) : super(message, code: 'PARSE_ERROR');
+}
+
+class TimeoutException extends AppException {
+  TimeoutException(String message) : super(message, code: 'TIMEOUT');
 }

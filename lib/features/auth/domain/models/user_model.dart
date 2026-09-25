@@ -1,3 +1,4 @@
+// lib/features/auth/domain/models/user_model.dart
 import 'package:equatable/equatable.dart';
 
 class UserModel extends Equatable {
@@ -7,19 +8,38 @@ class UserModel extends Equatable {
   final String? photoUrl;
   final DateTime createdAt;
 
-  const UserModel({required this.id, required this.name, required this.email, this.photoUrl, required this.createdAt});
+  const UserModel({
+    required this.id,
+    required this.name,
+    required this.email,
+    this.photoUrl,
+    required this.createdAt,
+  });
 
-  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-        id: json['id'] as String? ?? '',
-        name: json['name'] as String? ?? '',
-        email: json['email'] as String? ?? '',
-        photoUrl: json['photoUrl'] as String?,
-        createdAt: DateTime.tryParse(json['createdAt'] as String? ?? '') ?? DateTime.now(),
+  factory UserModel.empty() => UserModel(
+        id: '',
+        name: '',
+        email: '',
+        createdAt: DateTime.now(),
       );
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
+  factory UserModel.fromMap(Map<String, dynamic> map) {
+    return UserModel(
+      id: map['uid'] ?? map['id'] ?? '',
+      name: map['displayName'] ?? map['name'] ?? '',
+      email: map['email'] ?? '',
+      photoUrl: map['photoUrl'],
+      createdAt: map['createdAt'] != null
+          ? (map['createdAt'] is DateTime
+              ? map['createdAt']
+              : DateTime.tryParse(map['createdAt'].toString()) ?? DateTime.now())
+          : DateTime.now(),
+    );
+  }
+
+  Map<String, dynamic> toMap() => {
+        'uid': id,
+        'displayName': name,
         'email': email,
         'photoUrl': photoUrl,
         'createdAt': createdAt.toIso8601String(),
