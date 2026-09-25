@@ -1,54 +1,101 @@
-class ApiException implements Exception {
+abstract class AppException implements Exception {
   final String message;
-  final int? statusCode;
+  final String? code;
   final dynamic originalException;
 
-  ApiException({
+  AppException({
     required this.message,
-    this.statusCode,
+    this.code,
     this.originalException,
   });
 
   @override
-  String toString() => 'ApiException: $message (Status: $statusCode)';
+  String toString() => '$runtimeType: $message';
 }
 
-class NetworkException implements Exception {
-  final String message;
-
-  NetworkException({required this.message});
-
-  @override
-  String toString() => 'NetworkException: $message';
+class AuthException extends AppException {
+  AuthException({
+    required String message,
+    String? code,
+    dynamic originalException,
+  }) : super(
+        message: message,
+        code: code,
+        originalException: originalException,
+      );
 }
 
-class AuthException implements Exception {
-  final String message;
-
-  AuthException({required this.message});
-
-  @override
-  String toString() => 'AuthException: $message';
+class NetworkException extends AppException {
+  NetworkException({
+    required String message,
+    String? code,
+    dynamic originalException,
+  }) : super(
+        message: message,
+        code: code,
+        originalException: originalException,
+      );
 }
 
-class ValidationException implements Exception {
-  final String message;
-  final Map<String, dynamic>? errors;
+class DatabaseException extends AppException {
+  DatabaseException({
+    required String message,
+    String? code,
+    dynamic originalException,
+  }) : super(
+        message: message,
+        code: code,
+        originalException: originalException,
+      );
+}
+
+class ValidationException extends AppException {
+  final Map<String, String>? fieldErrors;
 
   ValidationException({
-    required this.message,
-    this.errors,
-  });
-
-  @override
-  String toString() => 'ValidationException: $message';
+    required String message,
+    String? code,
+    this.fieldErrors,
+    dynamic originalException,
+  }) : super(
+        message: message,
+        code: code,
+        originalException: originalException,
+      );
 }
 
-class CacheException implements Exception {
-  final String message;
+class CacheException extends AppException {
+  CacheException({
+    required String message,
+    String? code,
+    dynamic originalException,
+  }) : super(
+        message: message,
+        code: code,
+        originalException: originalException,
+      );
+}
 
-  CacheException({required this.message});
+class UnauthorizedException extends AuthException {
+  UnauthorizedException({
+    required String message,
+    String? code,
+    dynamic originalException,
+  }) : super(
+        message: message,
+        code: code,
+        originalException: originalException,
+      );
+}
 
-  @override
-  String toString() => 'CacheException: $message';
+class NotFoundException extends AppException {
+  NotFoundException({
+    required String message,
+    String? code,
+    dynamic originalException,
+  }) : super(
+        message: message,
+        code: code,
+        originalException: originalException,
+      );
 }
